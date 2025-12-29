@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Butko 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+    min-height:100vh;
+    font-family:Georgia, serif;
+    display:flex;justify-content:center;align-items:center;
+    padding:20px;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    color:#fff;
+    overflow:hidden;
+}
+.card{
+    background:#fff;
+    color:#111;
+    border-radius:20px;
+    padding:30px 25px;
+    max-width:420px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 25px 45px rgba(0,0,0,0.3);
+    position:relative;
+    overflow:hidden;
+}
+h1{font-size:26px;margin-bottom:15px;}
+p{font-size:17px;line-height:1.6;margin-bottom:20px;min-height:80px;}
+input{padding:12px;width:100%;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;}
+button{
+    width:100%;padding:14px;margin-top:10px;
+    font-size:16px;border-radius:30px;border:none;
+    cursor:pointer;
+    transition:0.3s all;
+}
+button:hover{opacity:0.9;}
+.primary{background:#ff4d6d;color:#fff;}
+.danger{background:#ff6f61;color:#fff;}
+.success{background:#28a745;color:#fff;}
+.envelope{
+    width:120px;height:80px;background:#fdd835;border-radius:10px;
+    display:flex;justify-content:center;align-items:center;
+    margin:20px auto;cursor:pointer;
+    position:relative;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+    transition:0.5s all;
+}
+.letter{
+    width:100px;height:60px;background:#fff;color:#111;
+    position:absolute;top:10px;left:50%;transform:translateX(-50%);
+    display:flex;justify-content:center;align-items:center;
+    border:2px solid #ff4d6d;border-radius:8px;
+    font-size:16px;opacity:0;
+    transition:0.5s all;
+}
+.letter.shake{
+    animation:shake 0.5s;
+}
+@keyframes shake{
+    0%{transform:translateX(-50%) translateY(0);}
+    25%{transform:translateX(-50%) translateY(-5px);}
+    50%{transform:translateX(-50%) translateY(5px);}
+    75%{transform:translateX(-50%) translateY(-5px);}
+    100%{transform:translateX(-50%) translateY(0);}
+}
+.letter.tukde{
+    animation:tukde 0.8s forwards;
+}
+@keyframes tukde{
+    0%{opacity:1;transform:rotate(0deg);}
+    100%{opacity:0;transform:rotate(720deg) translateY(-150px);}
+}
+.heart{
+    position:absolute;
+    font-size:24px;
+    animation:floatUp 2s linear forwards;
+    pointer-events:none;
+}
+@keyframes floatUp{
+    0%{opacity:1;transform:translateY(0) scale(1);}
+    100%{opacity:0;transform:translateY(-150px) scale(2);}
+}
+.confetti{
+    position:absolute;
+    width:10px;height:10px;
+    background:radial-gradient(circle,#ff4d6d,#ffb6b9);
+    top:0;left:0;
+    animation:fall 2s linear forwards;
+}
+@keyframes fall{
+    0%{transform:translateY(0) rotate(0deg);}
+    100%{transform:translateY(200px) rotate(720deg);opacity:0;}
+}
+</style>
+</head>
+<body>
+<div class="card" id="card">
+    <h1 id="title">Hello Butko 👀</h1>
+    <p id="text">Password daalein pehle 😌</p>
+    <input type="password" id="pass" placeholder="Secret word 💌">
+    <button class="primary" id="unlockBtn">Unlock ❤️</button>
+    
+    <div id="envelopes" style="display:none;">
+        <div class="envelope" id="env1">📩
+            <div class="letter" id="letter1"></div>
+        </div>
+        <div class="envelope" id="env2" style="display:none;">📩
+            <div class="letter" id="letter2"></div>
+        </div>
+        <div class="envelope" id="env3" style="display:none;">📩
+            <div class="letter" id="letter3"></div>
+        </div>
+    </div>
+    <button id="screenshotBtn" style="display:none;" class="primary">📸 Save Memory</button>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<script>
+const passInput = document.getElementById("pass");
+const unlockBtn = document.getElementById("unlockBtn");
+const text = document.getElementById("text");
+const envelopes = document.getElementById("envelopes");
+const bgMusic = document.getElementById("bgMusic");
+const card = document.getElementById("card");
+const screenshotBtn = document.getElementById("screenshotBtn");
+
+const PASSWORDS=["butko","jaan","baby"];
+
+unlockBtn.onclick=()=>{
+    const val=passInput.value.toLowerCase();
+    if(PASSWORDS.includes(val)){
+        passInput.style.display="none";
+        unlockBtn.style.display="none";
+        envelopes.style.display="block";
+        text.innerText="Achha Butko… pehla envelope kholen 😏";
+        bgMusic.play();
+    } else{
+        text.innerText="Oops… galat password 😌";
+    }
+};
+
+// Puzzle Data
+const puzzles=[
+    {question:"Agar aapki smile 10 aur meri 15, total happiness kya hui?", answer:"25"},
+    {question:"Riddle: Main aapke liye sabse pyara hoon, lekin chhoo nahi sakte. Main kya hoon?", answer:"dil"},
+    {question:"Emoji puzzle: ❤️ + 🌙 + 🌹 = ?", answer:"love"}
+];
+
+function createPuzzle(letter, puzzle){
+    letter.innerHTML=`${puzzle.question}<br><input type="text" id="ans"><button id="sub">Submit</button>`;
+    letter.style.opacity=1;
+    document.getElementById("sub").onclick=()=>{
+        const val=document.getElementById("ans").value.toLowerCase().trim();
+        if(val===puzzle.answer){
+            letter.style.opacity=0;
+            if(letter.id==="letter1"){document.getElementById("env2").style.display="block";text.innerText="Next envelope kholen 😏";}
+            if(letter.id==="letter2"){document.getElementById("env3").style.display="block";text.innerText="Last envelope 😍";}
+            if(letter.id==="letter3"){showProposal();}
+        }else{
+            letter.classList.add("tukde");
+            text.innerText="Oops… galat answer 😌 Letter tut gaya!";
+            setTimeout(()=>{letter.classList.remove("tukde");letter.innerHTML="";letter.style.opacity=0;},800);
+        }
+    };
+}
+
+document.getElementById("env1").onclick=()=>createPuzzle(document.getElementById("letter1"),puzzles[0]);
+document.getElementById("env2").onclick=()=>createPuzzle(document.getElementById("letter2"),puzzles[1]);
+document.getElementById("env3").onclick=()=>createPuzzle(document.getElementById("letter3"),puzzles[2]);
+
+// Proposal
+function typeWriter(msg, el, speed=40, callback){
+    let idx=0;el.innerHTML="";
+    function type(){
+        if(idx<msg.length){
+            el.innerHTML+=msg.charAt(idx);
+            idx++;
+            setTimeout(type,speed);
+        }else{if(callback)callback();}
+    }
+    type();
+}
+
+function createHeart(){const heart=document.createElement("div");heart.className="heart";heart.innerText="❤️";heart.style.left=Math.random()*card.offsetWidth+"px";card.appendChild(heart);setTimeout(()=>card.removeChild(heart),2000);}
+function createConfetti(){const confetti=document.createElement("div");confetti.className="confetti";confetti.style.left=Math.random()*card.offsetWidth+"px";card.appendChild(confetti);setTimeout(()=>card.removeChild(confetti),2000);}
+
+function showProposal(){
+    document.getElementById("env3").style.display="none";
+    text.innerHTML="";
+    const proposalMessage=`Butko… aap meri har khushi ka reason hain ❤️<br>
+Meri zindagi ki sabse pyari musibat hain…<br>
+Aur main chahata hoon hamesha aapke saath rahoon 💍<br>
+Kya aap mujhse shaadi karengi?`;
+    typeWriter(proposalMessage,text,50,()=>{
+        const yesBtn=document.createElement("button");yesBtn.className="success";yesBtn.innerText="Yes 😍";
+        yesBtn.onclick=()=>{
+            alert("Yay! ❤️ Butko said Yes! 💍");screenshotBtn.style.display="block";
+            const h=setInterval(createHeart,200);const c=setInterval(createConfetti,150);
+            setTimeout(()=>{clearInterval(h);clearInterval(c);},4000);
+        };
+        const noBtn=document.createElement("button");noBtn.className="danger";noBtn.innerText="No 🙈";
+        noBtn.onclick=()=>alert("Oh no… Butko, try again 😌");
+        card.appendChild(yesBtn);card.appendChild(noBtn);
+    });
+}
+
+// Screenshot
+screenshotBtn.onclick=()=>{
+    screenshotBtn.style.display="none";
+    html2canvas(card).then(canvas=>{
+        const link=document.createElement("a");link.download="butko_memory.png";
+        link.href=canvas.toDataURL();link.click();
+        screenshotBtn.style.display="block";
+    });
+};
+</script>
+</body>
+</html>
